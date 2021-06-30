@@ -1,1 +1,1 @@
-# skytrip_b2b_docker
+# Django Onepage Application
