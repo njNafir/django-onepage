@@ -23,6 +23,7 @@ def add_pattern(model, form, form_update=False, validator=False):
         'data-post-url': '/ajax/two-act-handler/'
     }
 
+
 patterns = [
     path('ajax/four-act-handler/', ajax_four_act_handler, name='ajax-four-act-handler'),
     path('ajax/two-act-handler/', ajax_two_act_handler, name='ajax-two-act-handler'),
