@@ -70,6 +70,7 @@ def ajax_four_act_handler(request, props=None):
     if props is None:
         data, files = populate_data_from_request(request)
     else:
+        print(gv.data_map_for_list_view)
         data = gv.data_map_for_list_view.get(props, False)
         if type(data) is dict:
             data['model-props'] = props
@@ -93,7 +94,12 @@ def ajax_four_act_handler(request, props=None):
 
         if method == 'GET' and action == 'view':
             result = {'action': 'view'}
-            keys = data.get('data-keys', 'id').split(',')
+            keys = data.get('data-keys')
+
+            if keys and keys != '':
+                keys = keys.split(',')
+            else:
+                keys = gv.data_map_for_list_view[app_label + '-' + 'view' + '-' + model_name]['data-keys'].split(',')
 
             data['data_add_props'] = app_label + '-add-' + model_name
             data['data_change_props'] = app_label + '-change-' + model_name
@@ -172,13 +178,14 @@ def ajax_four_act_handler(request, props=None):
             return JsonResponse(result)
 
         elif method == 'GET' and action == 'delete':
+            result = {'action': 'delete'}
             instance = get_instance_by_kwargs(
                 data, model_name=model_name
             ).first()
 
             instance.delete()
 
-            return JsonResponse(data)
+            return JsonResponse(result)
 
         else:
             response = JsonResponse(
