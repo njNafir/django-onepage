@@ -76,112 +76,121 @@ def ajax_four_act_handler(request, props=None):
         else:
             return HttpResponse('')
 
-    app_label, action, model_name = model_props(
-        data.get('model-props', 'rider-add-profile')
-    )
-
-    response = check_act_perm(
-        request, app_label, action, model_name
-    )
-
-    if response:
-        return response
-
-    method = request.method
-    data['verbose_name'] = get_verbose_name(model_name)
-
-    if method == 'GET' and action == 'view':
-        result = {'action': 'view'}
-        keys = data.get('data-keys', 'id').split(',')
-
-        data['data_add_props'] = app_label + '-add-' + model_name
-        data['data_change_props'] = app_label + '-change-' + model_name
-        data['data_delete_props'] = app_label + '-delete-' + model_name
-
-        data['add_perm'] = request.user.has_perm(
-            app_label + '.' + 'add' + '_' + model_name
-        )
-        data['change_perm'] = request.user.has_perm(
-            app_label + '.' + 'change' + '_' + model_name
-        )
-        data['delete_perm'] = request.user.has_perm(
-            app_label + '.' + 'delete' + '_' + model_name
+    try:
+        app_label, action, model_name = model_props(
+            data.get('model-props', 'rider-add-profile')
         )
 
-        data['ajax_call_add_change'] = 'ajax-four-act-handler-call-add-change-' + model_name
-        data['custom_script'] = get_form_call_custom_script(data['ajax_call_add_change'])
-
-        data['objects'] = list(get_instance_by_kwargs(
-            data, model_name=model_name
-        ).values(*keys).all())
-
-        data['headers'] = get_verbose_name_for_fields(model_name, keys)
-
-        result['html'] = get_template('onepage/list.html').render(
-            data, request=request
+        response = check_act_perm(
+            request, app_label, action, model_name
         )
 
-        if request.is_ajax():
-            return JsonResponse(result)
-        else:
-            return render(request, 'base.html', {
-                'html_body': result['html']
-            })
+        if response:
+            return response
 
-    elif method == 'GET' and action == 'add':
-        result = {'action': 'add'}
+        method = request.method
+        data['verbose_name'] = get_verbose_name(model_name)
 
-        form = gv.ajax_form_map[data['model-props']]()
+        if method == 'GET' and action == 'view':
+            result = {'action': 'view'}
+            keys = data.get('data-keys', 'id').split(',')
 
-        class_name = 'ajax-four-act-handler-add-' + model_name
-        data['custom_script'] = get_custom_script(class_name)
-        data['form_props'] = app_label + '-add-' + model_name
-        data['method'] = 'POST'
+            data['data_add_props'] = app_label + '-add-' + model_name
+            data['data_change_props'] = app_label + '-change-' + model_name
+            data['data_delete_props'] = app_label + '-delete-' + model_name
 
-        result['html'] = get_template('onepage/form.html').render(
-            populate_template_context(
-                form, data, class_name
-            ), request=request
-        )
+            data['add_perm'] = request.user.has_perm(
+                app_label + '.' + 'add' + '_' + model_name
+            )
+            data['change_perm'] = request.user.has_perm(
+                app_label + '.' + 'change' + '_' + model_name
+            )
+            data['delete_perm'] = request.user.has_perm(
+                app_label + '.' + 'delete' + '_' + model_name
+            )
 
-        return JsonResponse(result)
+            data['ajax_call_add_change'] = 'ajax-four-act-handler-call-add-change-' + model_name
+            data['custom_script'] = get_form_call_custom_script(data['ajax_call_add_change'])
 
-    elif method == 'GET' and action == 'change':
-        result = {'action': 'change'}
-        data['r_kwargs'] = "id=%s" % data['id']
-
-        form = gv.ajax_form_map[data['model-props']](
-            instance=get_instance_by_kwargs(
+            data['objects'] = list(get_instance_by_kwargs(
                 data, model_name=model_name
-            ).first())
+            ).values(*keys).all())
 
-        class_name = 'ajax-four-act-handler-change-%s-%s' % (
-            model_name, data.get('id', 0)
-        )
-        data['custom_script'] = get_custom_script(class_name)
-        data['form_props'] = app_label + '-change-' + model_name
-        data['method'] = 'POST'
+            data['headers'] = get_verbose_name_for_fields(model_name, keys)
 
-        result['html'] = get_template('onepage/form_edit.html').render(
-            populate_template_context(
-                form, data, class_name
-            ), request=request
-        )
+            result['html'] = get_template('onepage/list.html').render(
+                data, request=request
+            )
 
-        return JsonResponse(result)
+            if request.is_ajax():
+                return JsonResponse(result)
+            else:
+                return render(request, 'base.html', {
+                    'html_body': result['html']
+                })
 
-    elif method == 'GET' and action == 'delete':
-        instance = get_instance_by_kwargs(
-            data, model_name=model_name
-        ).first()
+        elif method == 'GET' and action == 'add':
+            result = {'action': 'add'}
 
-        instance.delete()
+            form = gv.ajax_form_map[data['model-props']]()
 
-        return JsonResponse(data)
+            class_name = 'ajax-four-act-handler-add-' + model_name
+            data['custom_script'] = get_custom_script(class_name)
+            data['form_props'] = app_label + '-add-' + model_name
+            data['method'] = 'POST'
 
-    else:
+            result['html'] = get_template('onepage/form.html').render(
+                populate_template_context(
+                    form, data, class_name
+                ), request=request
+            )
+
+            return JsonResponse(result)
+
+        elif method == 'GET' and action == 'change':
+            result = {'action': 'change'}
+            data['r_kwargs'] = "id=%s" % data['id']
+
+            form = gv.ajax_form_map[data['model-props']](
+                instance=get_instance_by_kwargs(
+                    data, model_name=model_name
+                ).first())
+
+            class_name = 'ajax-four-act-handler-change-%s-%s' % (
+                model_name, data.get('id', 0)
+            )
+            data['custom_script'] = get_custom_script(class_name)
+            data['form_props'] = app_label + '-change-' + model_name
+            data['method'] = 'POST'
+
+            result['html'] = get_template('onepage/form_edit.html').render(
+                populate_template_context(
+                    form, data, class_name
+                ), request=request
+            )
+
+            return JsonResponse(result)
+
+        elif method == 'GET' and action == 'delete':
+            instance = get_instance_by_kwargs(
+                data, model_name=model_name
+            ).first()
+
+            instance.delete()
+
+            return JsonResponse(data)
+
+        else:
+            response = JsonResponse(
+                {'message': 'Request and action is not valid.'}
+            )
+            response.status_code = 403
+
+            return response
+
+    except Exception as error:
         response = JsonResponse(
-            {'message': 'Request and action is not valid.'}
+            {'message': str(error)}
         )
         response.status_code = 403
 
