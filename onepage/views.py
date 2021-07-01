@@ -21,11 +21,13 @@ def ajax_two_act_handler(request):
         return response
 
     method = request.method
-    data['r_kwargs'] = "id=%s" % data['pk']
 
     try:
-        validator = gv.validator_map.get(data['model-props'], False)
-        validate = validator().is_valid()
+        validate = False
+        validator = gv.validator_map.get(model_name, False)
+
+        if validator:
+            validate = validator().is_valid()
 
         if not validate:
             raise Exception('Request not allowed, please check permission.')
@@ -41,6 +43,8 @@ def ajax_two_act_handler(request):
                 raise Exception(form.errors.as_text())
 
         elif method == 'POST' and action == 'change':
+            data['r_kwargs'] = "id=%s" % data['pk']
+
             form = gv.ajax_form_map[data['model-props']](
                 request.POST, request.FILES, instance=get_instance_by_kwargs(
                     data, model_name=model_name
