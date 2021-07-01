@@ -15,7 +15,7 @@ def add_pattern(model, form, form_update=False, validator=False):
     gv.ajax_form_map[app_label + '-' + 'change' + '-' + model_name] = form_update if form_update else form
 
     data_keys = ",".join(f.name for f in model._meta.get_fields())
-    data_keys = data_keys.split('id,')[1]
+    data_keys = 'id,' + data_keys.split('id,')[1]
 
     gv.data_map_for_list_view[app_label + '-' + 'view' + '-' + model_name] = {
         'r_kwargs': '',

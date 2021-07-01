@@ -70,7 +70,6 @@ def ajax_four_act_handler(request, props=None):
     if props is None:
         data, files = populate_data_from_request(request)
     else:
-        print(gv.data_map_for_list_view)
         data = gv.data_map_for_list_view.get(props, False)
         if type(data) is dict:
             data['model-props'] = props
@@ -179,6 +178,8 @@ def ajax_four_act_handler(request, props=None):
 
         elif method == 'GET' and action == 'delete':
             result = {'action': 'delete'}
+            data['r_kwargs'] = "id=%s" % data['id']
+
             instance = get_instance_by_kwargs(
                 data, model_name=model_name
             ).first()
