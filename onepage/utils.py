@@ -3,6 +3,7 @@ from django.http import JsonResponse
 
 
 def set_gv():
+    gv.menu_map = {}
     gv.model_map = {}
     gv.validator_map = {}
     gv.ajax_form_map = {}

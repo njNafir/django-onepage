@@ -6,7 +6,10 @@ from .utils import *
 set_gv()
 
 
-@login_required()
+def onepage_home(request):
+    return render(request, 'onepage/base.html')
+
+
 def ajax_two_act_handler(request):
     data, files = populate_data_from_request(request)
     app_label, action, model_name = model_props(
@@ -69,7 +72,6 @@ def ajax_two_act_handler(request):
         return response
 
 
-@login_required()
 def ajax_four_act_handler(request, props=None):
     if props is None:
         data, files = populate_data_from_request(request)
@@ -134,7 +136,7 @@ def ajax_four_act_handler(request, props=None):
             if request.is_ajax():
                 return JsonResponse(result)
             else:
-                return render(request, 'base.html', {
+                return render(request, 'onepage/base-body.html', {
                     'html_body': result['html']
                 })
 
@@ -172,7 +174,7 @@ def ajax_four_act_handler(request, props=None):
             data['form_props'] = app_label + '-change-' + model_name
             data['method'] = 'POST'
 
-            result['html'] = get_template('onepage/form_edit.html').render(
+            result['html'] = get_template('onepage/form-edit.html').render(
                 populate_template_context(
                     form, data, class_name
                 ), request=request
