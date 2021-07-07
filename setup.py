@@ -9,8 +9,8 @@ README = (HERE / "README.md").read_text()
 
 # This call to setup() does all the work
 setup(
-    name="django-onepage_tags.py",
-    version="1.0.5",
+    name="django-onepage",
+    version="1.0.6",
     description="Django Onepage Application Management",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -23,7 +23,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
     ],
-    packages=['onepage_tags.py', 'onepage_tags.py.templates', 'onepage_tags.py.static'],
+    packages=['onepage', 'onepage.templates', 'onepage.static'],
     include_package_data=True,
     package_data={'templates': ['*'], 'static': ['*']},
     install_requires=[],
