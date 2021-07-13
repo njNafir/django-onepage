@@ -5,6 +5,7 @@ from django.http import JsonResponse
 def set_gv():
     gv.menu_map = {}
     gv.model_map = {}
+    gv.scripts_map = {}
     gv.validator_map = {}
     gv.ajax_form_map = {}
     gv.data_map_for_list_view = {}
@@ -91,17 +92,19 @@ def check_act_perm(request, app_label, action, model_name_actual):
         return False
 
 
-def get_custom_script(class_name):
+def get_custom_script(class_name, script=""):
     return """
+        %s        
         $('.%s').on('submit', function(e) {
             ajaxTwoActHandler($(this), e)
         });
-    """ % class_name
+    """ % (script, class_name)
 
 
-def get_form_call_custom_script(class_name):
+def get_form_call_custom_script(class_name, script=""):
     return """
+        %s
         $('.%s').on('click', function(e) {
             ajaxFourActHandler($(this))
         });
-    """ % class_name
+    """ % (script, class_name)
