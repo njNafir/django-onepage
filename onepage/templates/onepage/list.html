@@ -41,7 +41,7 @@
                             <tr role="row" class="odd" data-id="{{ object.id }}">
                                 <td tabindex="0">{{ forloop.counter }}</td>
                                 {% for key, value in object.items %}
-                                <td class="{{ key }}">{{ value }}</td>
+                                <td class="{{ key }}">{{ value|default:"" }}</td>
                                 {% endfor %}
                                 <td class="action">
                                     {% if change_perm %}
