@@ -115,49 +115,6 @@ $(document).ready(function() {
         }
     }
 
-    $(".id-restaurant-on-add-food-slider").change(function () {
-        var chang = $('#id_food');
-        var id_restaurant = $(".id-restaurant-on-add-food-slider option:selected").val()
-
-        $.ajax({
-            url: '/ajax/load-foods/'+id_restaurant+'/',
-            method: "GET",
-
-            success: function(data){
-                console.log('success', data)
-                var html = "";
-                $.each(data.option_dict, function(key, value) {
-                    html += '<option value=' + value.id + '>' + value.food_name + '</option>'
-                });
-                chang.html(html)
-            },
-            error: function (data) {
-                console.log('error', data)
-            }
-        });
-    });
-
-    $(".id-coffee-house-on-add-coffee-slider").change(function () {
-        var chang = $('#id_coffee');
-        var id_cafe = $(".id-coffee-house-on-add-coffee-slider option:selected").val()
-
-        $.ajax({
-            url: '/ajax/load-coffees/'+id_cafe+'/',
-            method: "GET",
-            success: function(data){
-                console.log('success', data)
-                var html = "";
-                $.each(data.option_dict, function(key, value) {
-                    html += '<option value=' + value.id + '>' + value.coffee_name + '</option>'
-                });
-                chang.html(html)
-            },
-            error: function (data) {
-                console.log('error', data)
-            }
-        });
-    });
-
     $('.table-entry-edit').on('click', function() {
       let tr = $(this).closest('tr');
       let td = tr.find('td');
