@@ -3,13 +3,14 @@ from django.urls import path, re_path
 from .validator import BasicValidator
 
 
-def add_pattern(model, form, form_update=False, validator=False):
+def add_pattern(model, form, form_update=False, validator=False, scripts={}):
     meta = model._meta
     app_label = meta.app_label
     model_name = meta.model_name
 
     gv.model_map[model_name] = model
     gv.validator_map[model_name] = validator or BasicValidator
+    gv.scripts_map[model_name] = scripts
 
     gv.ajax_form_map[app_label + '-' + 'add' + '-' + model_name] = form
     gv.ajax_form_map[app_label + '-' + 'change' + '-' + model_name] = form_update if form_update else form
