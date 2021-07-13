@@ -121,7 +121,10 @@ def ajax_four_act_handler(request, props=None):
             )
 
             data['ajax_call_add_change'] = 'ajax-four-act-handler-call-add-change-' + model_name
-            data['custom_script'] = get_form_call_custom_script(data['ajax_call_add_change'])
+            data['custom_script'] = get_form_call_custom_script(
+                data['ajax_call_add_change'],
+                gv.scripts_map[model_name].get('view', '')
+            )
 
             data['objects'] = list(get_instance_by_kwargs(
                 data, model_name=model_name
@@ -146,7 +149,7 @@ def ajax_four_act_handler(request, props=None):
             form = gv.ajax_form_map[data['model-props']]()
 
             class_name = 'ajax-four-act-handler-add-' + model_name
-            data['custom_script'] = get_custom_script(class_name)
+            data['custom_script'] = get_custom_script(class_name, gv.scripts_map[model_name].get('add', ''))
             data['form_props'] = app_label + '-add-' + model_name
             data['method'] = 'POST'
 
@@ -170,7 +173,7 @@ def ajax_four_act_handler(request, props=None):
             class_name = 'ajax-four-act-handler-change-%s-%s' % (
                 model_name, data.get('id', 0)
             )
-            data['custom_script'] = get_custom_script(class_name)
+            data['custom_script'] = get_custom_script(class_name, gv.scripts_map[model_name].get('change', ''))
             data['form_props'] = app_label + '-change-' + model_name
             data['method'] = 'POST'
 
