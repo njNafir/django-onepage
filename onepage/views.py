@@ -1,8 +1,9 @@
 from django.shortcuts import render, HttpResponse
 from django.template.loader import get_template
 from django.contrib.auth.decorators import login_required
-
+from django.conf import settings
 from .utils import *
+
 set_gv()
 
 
@@ -73,8 +74,11 @@ def ajax_two_act_handler(request):
 
 
 def ajax_four_act_handler(request, props=None):
+    url_hit = True
+
     if props is None:
         data, files = populate_data_from_request(request)
+        url_hit = False
     else:
         data = gv.data_map_for_list_view.get(props, False)
         if type(data) is dict:
@@ -101,6 +105,11 @@ def ajax_four_act_handler(request, props=None):
             result = {'action': 'view'}
             keys = data.get('data-keys')
 
+            try:
+                base_html_file = settings.ONEPAGE_BASE_HTML
+            except:
+                base_html_file = 'onepage/base-body.html'
+
             if keys and keys != '':
                 keys = keys.split(',')
             else:
@@ -126,6 +135,11 @@ def ajax_four_act_handler(request, props=None):
                 gv.scripts_map[model_name].get('view', '')
             )
 
+            if url_hit:
+                data['custom_script'] = data['custom_script'] + """
+                    $('#dataTableDynamics').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print']});
+                """
+
             data['objects'] = list(get_instance_by_kwargs(
                 data, model_name=model_name
             ).values(*keys).all())
@@ -139,7 +153,7 @@ def ajax_four_act_handler(request, props=None):
             if request.is_ajax():
                 return JsonResponse(result)
             else:
-                return render(request, 'onepage/base-body.html', {
+                return render(request, base_html_file, {
                     'html_body': result['html']
                 })
 
