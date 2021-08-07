@@ -51,6 +51,7 @@ def add_pattern(model, form, form_update=False, validator=False, scripts={}):
 patterns = [
     path('ajax/four-act-handler/', ajax_four_act_handler, name='ajax-four-act-handler'),
     path('ajax/two-act-handler/', ajax_two_act_handler, name='ajax-two-act-handler'),
+    path('onepage/set-session/', onepage_set_session, name='onepage-set-session'),
     path('', onepage_home, name='onepage-home'),
     re_path(r'^(?P<props>[\w-]+)/', ajax_four_act_handler, name="ajax-one-page-view")
 ]
