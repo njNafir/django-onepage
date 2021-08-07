@@ -3,6 +3,7 @@ from django.template.loader import get_template
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from .utils import *
+import json
 
 set_gv()
 
@@ -14,7 +15,7 @@ def onepage_home(request):
 def ajax_two_act_handler(request):
     data, files = populate_data_from_request(request)
     app_label, action, model_name = model_props(
-        data.get('model-props', 'rider-add-profile')
+        data.get('model-props', 'auth-add-group')
     )
 
     response = check_act_perm(
@@ -87,9 +88,18 @@ def ajax_four_act_handler(request, props=None):
             return HttpResponse('')
 
     try:
-        app_label, action, model_name = model_props(
-            data.get('model-props', 'rider-add-profile')
-        )
+        data_props = data.get('model-props', 'auth-add-group')
+        app_label, action, model_name = model_props(data_props)
+
+        if not url_hit:
+            session_model_kw = request.session.get('session-model-kw')
+
+            if session_model_kw:
+                this_model_kw = session_model_kw[data_props]
+
+                for key, value in this_model_kw.items():
+                    if data.get(key, "") != value:
+                        raise Exception("Request not valid, try again.", )
 
         response = check_act_perm(
             request, app_label, action, model_name
@@ -226,3 +236,25 @@ def ajax_four_act_handler(request, props=None):
         response.status_code = 403
 
         return response
+
+
+def onepage_set_session(request):
+    # try:
+    data = json.loads(request.GET['body'])
+
+    if request.is_ajax():
+        request.session['session-model-kw'] = data
+        return JsonResponse(data)
+    else:
+        raise Exception('Method not allowed.')
+
+    # except Exception as e:
+    #     if request.is_ajax():
+    #         err = {
+    #             'error': str(e)
+    #         }
+    #
+    #         response = JsonResponse(err)
+    #         response.status_code = 403
+    #
+    #         return response
