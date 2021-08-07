@@ -200,5 +200,4 @@ $(document).ready(function() {
         console.log($(this))
         ajaxFourActHandler($(this))
     });
-
 });
