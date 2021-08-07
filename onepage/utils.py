@@ -64,7 +64,7 @@ def populate_template_context(form, data, class_name):
         'form': form,
         'data_url': data.get('data-post-url', ''),
         'form_class': class_name,
-        'data_props': data.get('model-props', 'rider-add-profile'),
+        'data_props': data.get('model-props', 'auth-add-group'),
         **data
     }
 
