@@ -239,22 +239,22 @@ def ajax_four_act_handler(request, props=None):
 
 
 def onepage_set_session(request):
-    # try:
-    data = json.loads(request.GET['body'])
+    try:
+        data = json.loads(request.GET['body'])
 
-    if request.is_ajax():
-        request.session['session-model-kw'] = data
-        return JsonResponse(data)
-    else:
-        raise Exception('Method not allowed.')
+        if request.is_ajax():
+            request.session['session-model-kw'] = data
+            return JsonResponse(data)
+        else:
+            raise Exception('Method not allowed.')
 
-    # except Exception as e:
-    #     if request.is_ajax():
-    #         err = {
-    #             'error': str(e)
-    #         }
-    #
-    #         response = JsonResponse(err)
-    #         response.status_code = 403
-    #
-    #         return response
+    except Exception as e:
+        if request.is_ajax():
+            err = {
+                'error': str(e)
+            }
+    
+            response = JsonResponse(err)
+            response.status_code = 403
+    
+            return response
