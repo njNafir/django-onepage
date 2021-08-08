@@ -108,3 +108,16 @@ def get_form_call_custom_script(class_name, script=""):
             ajaxFourActHandler($(this))
         });
     """ % (script, class_name)
+
+
+def bootstrap_visible_fields(visible_fields):
+    for visible in visible_fields():
+        widget = visible.field.widget
+        class_name = widget.__class__.__name__
+
+        if class_name == 'Select':
+            widget.attrs['class'] = 'form-select'
+        elif class_name == 'CheckboxInput':
+            widget.attrs['class'] = 'form-check-input'
+        else:
+            widget.attrs['class'] = 'form-control'
