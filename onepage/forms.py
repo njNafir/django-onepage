@@ -1,4 +1,5 @@
 from django import forms
+from onepage.utils import bootstrap_visible_fields
 
 
 class ModelForm(forms.ModelForm):
