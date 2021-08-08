@@ -95,11 +95,12 @@ def ajax_four_act_handler(request, props=None):
             session_model_kw = request.session.get('session-model-kw')
 
             if session_model_kw:
-                this_model_kw = session_model_kw[data_props]
+                this_model_kw = session_model_kw.get(data_props, False)
 
-                for key, value in this_model_kw.items():
-                    if data.get(key, "") != value:
-                        raise Exception("Request not valid, try again.", )
+                if this_model_kw:
+                    for key, value in this_model_kw.items():
+                        if data.get(key, "") != value:
+                            raise Exception("Request not valid, try again.", )
 
         response = check_act_perm(
             request, app_label, action, model_name
