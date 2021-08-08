@@ -1,66 +1,4 @@
 $(document).ready(function() {
-    //set initial state.
-    $('#activityStatus').val(this.checked);
-
-    $('#activityStatus').change(function() {
-        let status = this.checked;
-        if(status) {
-            var returnVal = confirm("Are you sure to open the restaurant?");
-            $(this).prop("checked", returnVal);
-            if (returnVal){
-                console.log('api request for update......');
-                $.ajax({
-                    url: '/ajax/update-restaurants/',
-                    data: {
-                        'status': 'Open'
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-                        console.log(data);
-                        $('#restaurant_status').html('Restuarant Open');
-                        $('#restaurant_status').removeClass('btn-Closed');
-                        $('#restaurant_status').addClass('btn-Open');
-                        Swal.fire({
-                              position: 'top-end',
-                              icon: 'success',
-                              title: 'Restaurant Status Updated Successfully',
-                              showConfirmButton: false,
-                              timer: 1500
-                            })
-                    }
-                  });
-            }
-        }
-        if(!status){
-            var returnVal = confirm("Are you sure to close the restaurant?");
-             $(this).prop("checked", !returnVal);
-             if (returnVal){
-                console.log('api request for update .......');
-
-                $.ajax({
-                    url: '/ajax/update-restaurants/',
-                    data: {
-                        'status': 'Closed'
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-                        console.log(data);
-                        $('#restaurant_status').html('Restuarant Closed');
-                         $('#restaurant_status').removeClass('btn-Open');
-                        $('#restaurant_status').addClass('btn-Closed');
-                        Swal.fire({
-                              position: 'top-end',
-                              icon: 'success',
-                              title: 'Restaurant Status Updated Successfully',
-                              showConfirmButton: false,
-                              timer: 1000
-                            })
-                    }
-                  });
-             }
-        }
-    });
-
     function customAjaxSubmitFunction(e) {
         e.preventDefault();
 
@@ -151,7 +89,7 @@ $(document).ready(function() {
         },
 
         error: function(data){
-            console.log('error', data)
+//            console.log('error', data)
         }
       })
     });
@@ -197,7 +135,6 @@ $(document).ready(function() {
     })
 
     $('.ajax-four-act-handler').on('click', function() {
-        console.log($(this))
         ajaxFourActHandler($(this))
     });
 });
