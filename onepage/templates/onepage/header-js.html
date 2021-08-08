@@ -98,7 +98,7 @@
                 body: JSON.stringify(data)
 
                 success: function(data){
-                    console.log('success', data)
+                    console.log('success', url, data)
                     var html = "";
                     $.each(data.options, function(key, value) {
                         html += '<option value=' + value.id + '>' + value.food_name + '</option>'
