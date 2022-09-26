@@ -9,6 +9,7 @@ def set_gv():
     gv.validator_map = {}
     gv.ajax_form_map = {}
     gv.data_map_for_list_view = {}
+    gv.replace_fields = {}
 
 
 def get_kwargs_for_ajax_request(data):
@@ -32,7 +33,7 @@ def get_verbose_name_for_fields(model_name, keys=['id']):
     meta = gv.model_map[model_name]._meta
 
     return [
-        meta.get_field(key).verbose_name.capitalize() for key in keys
+        meta.get_field(key.split('__')[0]).verbose_name.capitalize() for key in keys
     ]
 
 
@@ -42,7 +43,10 @@ def get_instance_by_kwargs(data, model=None, model_name=None, kwargs=None):
     if not kwargs:
         kwargs = get_kwargs_for_ajax_request(data)
 
-    return model.objects.filter(**kwargs)
+    if kwargs:
+        return model.objects.filter(**kwargs)
+    else:
+        return model.objects
 
 
 def populate_data_from_request(request):

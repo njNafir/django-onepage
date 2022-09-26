@@ -22,9 +22,9 @@ def menu_items(context, *args, **kwargs):
 
                 if permitted:
                     if indexed_once:
-                        varified_menu_map[key]['submenu'].append(item)
+                        verified_menu_map[key]['submenu'].append(item)
                     else:
-                        varified_menu_map[key] = {
+                        verified_menu_map[key] = {
                             'id': menu['id'],
                             'title': menu['title'],
                             'submenu': [item]
