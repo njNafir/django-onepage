@@ -6,7 +6,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">{% if area_label %}{{ area_label }}{% elif verbose_name %}Add {{ verbose_name }}{% else %}New Item{% endif %}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
             </div>
             <div class="modal-body">
                 <div class="modal-body vcenter">
@@ -40,7 +42,7 @@
                         <div class="mb-3 row text-right">
                             <div class="col-md-8"></div>
                             <div class="col-md-2 text-right">
-                                <button class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                             </div>
                             <div class="col-md-2 text-left">
                                 <button

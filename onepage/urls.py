@@ -38,6 +38,7 @@ def add_pattern(model, form, form_update=False, validator=False, scripts=None, r
 
     else:
         gv.menu_map[app_label] = {
+            'app': app_label,
             'id': app_label + 'AppMenuItem',
             'title': app_label.capitalize(),
             'submenu': [

@@ -22,9 +22,8 @@
                     var body_content = $('#bodyContent');
                     body_content.html(data['html']);
 
-                    $('#dataTableDynamics').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print']});
+                    $('#dataTableDynamics').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print', 'colvis']});
                     window.history.pushState({},"", '/' + props + '/');
-
                 } else if (data['action'] == 'add'){
                     var add_item_form_holding = $('#ajaxTwoActHandlerCreate');
                     add_item_form_holding.html(data['html']);
@@ -111,10 +110,4 @@
             });
         });
     }
-
-var path_now = {{ request.path }};
-path_now = path_now.toString().replace('/', '');
-path_now = path_now.replace('/', '')
-$("#" + path_now).addClass("mm-active");
-
 </script>

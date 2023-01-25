@@ -25,6 +25,7 @@ def menu_items(context, *args, **kwargs):
                         verified_menu_map[key]['submenu'].append(item)
                     else:
                         verified_menu_map[key] = {
+                            'app': menu['app'],
                             'id': menu['id'],
                             'title': menu['title'],
                             'submenu': [item]

@@ -1,10 +1,6 @@
-.custom-table {
-    border: 1px solid gray !important;
-    box-shadow: 8px 8px 10px #888888;
-}
-
 .custom-table th {
-    background-color: rgb(10, 131, 116);
+    background-color: #6c757d;
+    color: white
 }
 
 .custom-table thead tr th.Id {

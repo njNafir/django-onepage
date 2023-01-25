@@ -37,7 +37,7 @@ def get_verbose_name_for_fields(model_name, keys=['id']):
     ]
 
 
-def get_instance_by_kwargs(data, model=None, model_name=None, kwargs=None):
+def get_instance_by_kwargs(data, model=None, model_name=None, kwargs=None, request_user=None):
     if not model:
         model = gv.model_map[model_name]
     if not kwargs:
@@ -45,6 +45,8 @@ def get_instance_by_kwargs(data, model=None, model_name=None, kwargs=None):
 
     if kwargs:
         return model.objects.filter(**kwargs)
+    elif request_user:
+        return model.objects.filter(request_user=request_user)
     else:
         return model.objects
 
@@ -119,9 +121,12 @@ def bootstrap_visible_fields(visible_fields):
         widget = visible.field.widget
         class_name = widget.__class__.__name__
 
-        if class_name == 'Select':
-            widget.attrs['class'] = 'form-select'
-        elif class_name == 'CheckboxInput':
+        # if class_name == 'Select':
+        #     widget.attrs['class'] = 'form-control select2 select2-hidden-accessible'
+        # if class_name == 'SelectMultiple':
+        #     widget.attrs['class'] = 'select2 select2-hidden-accessible'
+
+        if class_name == 'CheckboxInput':
             widget.attrs['class'] = 'form-check-input'
         else:
             widget.attrs['class'] = 'form-control'
